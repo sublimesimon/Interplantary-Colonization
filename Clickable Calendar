@@ -3,23 +3,15 @@
 <head>
   <title>Trip Scheduler</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
     .container {
       max-width: 600px;
-      margin: 20px auto;
+      margin: 0 auto;
       padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #f9f9f9;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
+      font-size: 24px;
       margin-bottom: 20px;
     }
 
@@ -32,22 +24,25 @@
     }
 
     .step-title {
-      font-weight: bold;
-      margin-bottom: 10px;
+      font-size: 20px;
+      margin-bottom: 20px;
     }
 
     .form-field {
       margin-bottom: 15px;
+      text-align: left;
     }
 
-    .form-field label {
+    label {
       display: block;
-      font-weight: bold;
       margin-bottom: 5px;
+      font-weight: bold;
     }
 
-    .form-field input,
-    .form-field select {
+    select,
+    input[type="text"],
+    input[type="email"],
+    input[type="date"] {
       width: 100%;
       padding: 8px;
       border: 1px solid #ccc;
@@ -56,45 +51,37 @@
 
     .step-actions {
       margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
 
     .btn {
+      display: inline-block;
       padding: 10px 20px;
-      background-color: #4CAF50;
+      background-color: #4caf50;
       color: #fff;
       border: none;
       border-radius: 4px;
       cursor: pointer;
     }
 
-    .btn.next {
-      background-color: #2196F3;
-    }
-
     .btn.previous {
-      background-color: #999;
+      background-color: #ccc;
     }
 
-    .btn.submit {
-      background-color: #f44336;
+    .summary-box {
+      margin-top: 30px;
+      text-align: left;
     }
 
-    .review-summary {
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      padding: 10px;
-      background-color: #fff;
+    .summary-box h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
     }
 
-    .review-summary p {
-      margin: 0;
+    .summary-box p {
+      margin-bottom: 5px;
     }
 
-    .review-summary strong {
+    .summary-box strong {
       font-weight: bold;
     }
   </style>
@@ -108,10 +95,12 @@
       <div class="form-field">
         <label for="destination">Destination:</label>
         <select id="destination">
-          <option value="">Select Destination</option>
+          <option value="">Select a destination</option>
           <option value="mars-base">Mars Base</option>
           <option value="valles-marineris">Valles Marineris</option>
           <option value="olympus-mons">Olympus Mons</option>
+          <option value="red-planet">Red Planet Resort</option>
+          <option value="phobos-base">Phobos Base</option>
         </select>
       </div>
       <div class="step-actions">
@@ -122,12 +111,12 @@
     <div class="step-container" id="step2">
       <h2 class="step-title">Step 2: Select Dates</h2>
       <div class="form-field">
-        <label for="start-date">Start Date:</label>
-        <input type="date" id="start-date">
+        <label for="departure-date">Departure Date:</label>
+        <input type="date" id="departure-date">
       </div>
       <div class="form-field">
-        <label for="end-date">End Date:</label>
-        <input type="date" id="end-date">
+        <label for="return-date">Return Date:</label>
+        <input type="date" id="return-date">
       </div>
       <div class="step-actions">
         <button class="btn previous" onclick="previousStep()">Previous</button>
@@ -145,76 +134,81 @@
         <label for="email">Email:</label>
         <input type="email" id="email">
       </div>
-      <div class="form-field">
-        <label for="contact">Contact Information:</label>
-        <input type="text" id="contact">
-      </div>
       <div class="step-actions">
         <button class="btn previous" onclick="previousStep()">Previous</button>
         <button class="btn next" onclick="nextStep()">Next</button>
       </div>
     </div>
 
+      <div class="container">
+    
+
     <div class="step-container" id="step4">
-      <h2 class="step-title">Step 4: Review and Confirm</h2>
-      <div class="review-summary">
-        <p><strong>Destination:</strong> <span id="review-destination"></span></p>
-        <p><strong>Dates:</strong> <span id="review-dates"></span></p>
-        <p><strong>Name:</strong> <span id="review-name"></span></p>
-        <p><strong>Email:</strong> <span id="review-email"></span></p>
-        <p><strong>Contact Information:</strong> <span id="review-contact"></span></p>
-      </div>
+      <h2 class="step-title">Step 4: Trip Summary</h2>
+      <div class="summary-box" id="summary-box"></div>
       <div class="step-actions">
         <button class="btn previous" onclick="previousStep()">Previous</button>
-        <button class="btn submit" onclick="submitForm()">Confirm</button>
+        <button class="btn next" onclick="showSummary()">Next</button>
+        <button class="btn" onclick="displayInfo()">Display Info</button>
       </div>
+    </div>
+    <div class="step-container" id="step5">
+      <h2 class="step-title">Almost There!</h2>
+      <p>We just need some final details to complete your trip. <a href="https://www.interplanetarycolonization.org/almost-there" target="_blank">Click here</a> to provide the remaining information.</p>
     </div>
   </div>
 
   <script>
-    let currentStep = 1;
-    const stepContainers = document.getElementsByClassName("step-container");
-
-    function showStep(step) {
-      for (let i = 0; i < stepContainers.length; i++) {
-        if (i === step - 1) {
-          stepContainers[i].classList.add("active");
-        } else {
-          stepContainers[i].classList.remove("active");
-        }
-      }
-    }
+    var currentStep = 1;
 
     function nextStep() {
-      if (currentStep < stepContainers.length) {
+      if (currentStep < 4) {
+        document.getElementById("step" + currentStep).classList.remove("active");
         currentStep++;
-        showStep(currentStep);
+        document.getElementById("step" + currentStep).classList.add("active");
+      } else if (currentStep === 4) {
+        showSummary();
       }
     }
 
     function previousStep() {
       if (currentStep > 1) {
+        document.getElementById("step" + currentStep).classList.remove("active");
         currentStep--;
-        showStep(currentStep);
+        document.getElementById("step" + currentStep).classList.add("active");
       }
     }
 
-    function submitForm() {
-      const destination = document.getElementById("destination").value;
-      const startDate = document.getElementById("start-date").value;
-      const endDate = document.getElementById("end-date").value;
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const contact = document.getElementById("contact").value;
+    function showSummary() {
+      var destination = document.getElementById("destination").value;
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
 
-      document.getElementById("review-destination").textContent = destination;
-      document.getElementById("review-dates").textContent = startDate + " to " + endDate;
-      document.getElementById("review-name").textContent = name;
-      document.getElementById("review-email").textContent = email;
-      document.getElementById("review-contact").textContent = contact;
+      var summaryBox = document.getElementById("summary-box");
+      summaryBox.innerHTML = `
+        <h2>Trip Summary:</h2>
+        <p><strong>Destination:</strong> ${destination}</p>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+      `;
 
-      nextStep(); // Move to the final step or perform any other action
+      document.getElementById("step" + currentStep).classList.remove("active");
+      currentStep++;
+      document.getElementById("step" + currentStep).classList.add("active");
     }
+ function displayInfo() {
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var destination = document.getElementById("destination").value;
+
+        var summaryBox = document.getElementById("summary-box");
+        summaryBox.innerHTML = `
+          <h2>Trip Summary:</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Destination:</strong> ${destination}</p>
+        `;
+      }
   </script>
 </body>
 </html>
