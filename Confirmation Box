@@ -1,1 +1,67 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Confirmation Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      text-align: center;
+      margin-top: 0;
+    }
+    
+    .confirmation {
+      margin-bottom: 20px;
+    }
+    
+    .label {
+      font-weight: bold;
+    }
+    
+    .value {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Confirmation Page</h1>
+    
+    <div class="confirmation">
+      <p><span class="label">Name:</span><span class="value" id="name"></span></p>
+      <p><span class="label">Email:</span><span class="value" id="email"></span></p>
+      <p><span class="label">Phone Number:</span><span class="value" id="phone"></span></p>
+      <p><span class="label">Destination:</span><span class="value" id="destination"></span></p>
+    </div>
+  </div>
+
+  <script>
+    // Retrieve the information from the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name');
+    const email = urlParams.get('email');
+    const phone = urlParams.get('phone');
+    const destination = urlParams.get('destination');
+
+    // Update the HTML with the retrieved information
+    document.getElementById('name').textContent = name;
+    document.getElementById('email').textContent = email;
+    document.getElementById('phone').textContent = phone;
+    document.getElementById('destination').textContent = destination;
+  </script>
+</body>
+</html>
